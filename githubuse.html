@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Editor</title>
+</head>
+<body>
+    <h1>JSON Editor</h1>
+    <pre id="jsonDisplay"></pre>
+    <textarea id="jsonInput" rows="10" cols="50"></textarea><br>
+    <button onclick="updateJson()">Update JSON</button>
+
+    <script>
+        const url = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/data.json';
+        
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('jsonDisplay').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('jsonInput').value = JSON.stringify(data, null, 2);
+            });
+
+        function updateJson() {
+            const updatedData = JSON.parse(document.getElementById('jsonInput').value);
+            const token = 'YOUR_GITHUB_TOKEN'; // Replace with your GitHub token
+            fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/contents/data.json', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: 'Updated data.json',
+                    content: btoa(JSON.stringify(updatedData)),
+                    sha: '', // Provide the SHA of the existing file if needed
+                }),
+            })
+            .then(response => response.json())
+            .then(result => console.log(result));
+        }
+    </script>
+</body>
+</html>
