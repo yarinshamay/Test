@@ -24,7 +24,7 @@
         function updateJson() {
             const updatedData = JSON.parse(document.getElementById('jsonInput').value);
             const token = 'YOUR_GITHUB_TOKEN'; // Replace with your GitHub token
-            fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/contents/data.json', {
+            fetch('https://api.github.com/repos/yarinshamay/Test/contents/data.json', {
                 method: 'PUT',
                 headers: {
                     'Authorization': `token ${token}`,
